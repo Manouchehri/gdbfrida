@@ -98,18 +98,18 @@ class GDBStub():
         pass
 
     def read_packet(self):
-        epoll = select.epoll()
-        epoll.register(self.sock.fileno(),  select.EPOLLIN | select.EPOLLHUP | select.EPOLLRDHUP)
+        epoll = select.poll()
+        epoll.register(self.sock.fileno(),  select.POLLIN | select.POLLHUP) # EPOLLRDHUP
         while self.attached:
             events = epoll.poll()
             for fileno, event in events:
                 if fileno == self.sock.fileno():
-                    if event == select.EPOLLIN:
+                    if event == select.POLLIN:
                         self.buffer += self.sock.recv(PACKET_SIZE)
-                    if event == select.EPOLLHUP:
-                        self.log.debug('EPOLLHUP')
-                    if event == select.EPOLLRDHUP:
-                        self.log.debug('EPOLLRDHUP')
+                    if event == select.POLLHUP:
+                        self.log.debug('POLLHUP')
+                    # if event == select.EPOLLRDHUP:
+                    #     self.log.debug('EPOLLRDHUP')
                 else:
                     raise RuntimeError('unknown fd %d', fileno)
             # CTRL-C ?
