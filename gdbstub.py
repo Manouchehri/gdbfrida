@@ -37,12 +37,13 @@ def expect_ack(func):
 class GDBSignal(Enum):
     TRAP = 5
 
-
+# https://sourceware.org/gdb/current/onlinedocs/gdb/Packets.html
 class GDBCmd(Enum):
     GEN_QUERY_GET = 'q'
     GEN_QUERY_SET = 'Q'
     SET_THREAD_ID = 'H'
     TARGET_STATUS = '?'
+    ENABLE_EXTENDED_MODE = '!'
     READ_REGISTERS = 'g'
     WRITE_REGISTERS = 'G'
     DETACH = 'D'
@@ -52,6 +53,8 @@ class GDBCmd(Enum):
     WRITE_DATA_MEMORY = 'X'
     CONTINUE = 'c'
     SINGLESTEP = 's'
+    BACKWARD_CONTINUE = 'bc'
+    BACKWARD_SINGLESTEP = 'bs'
     IS_THREAD_ALIVE = 'T'
     REMOVE_XPOINT = 'z'
     INSERT_XPOINT = 'Z'
